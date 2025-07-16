@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import './globals.css'
 import { Providers } from './providers'
-import { Navbar } from './components/Navbar'
+import { Navbar } from '@/app/components/Navbar'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +16,7 @@ export default function RootLayout ({
 }>) {
   return (
     <html lang='es' suppressHydrationWarning>
-      <body>
+      <body className='text-slate-900 dark:text-slate-100'>
         <Providers>
           <Navbar />
           {children}

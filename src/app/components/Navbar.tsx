@@ -1,15 +1,18 @@
 import Link from 'next/link'
-import ThemeSwitch from './ThemeSwitch'
+import ThemeSwitch from '@/app/components/ThemeSwitch'
 
 export function Navbar () {
   return (
-    <nav>
-      <ul className='flex gap-4'>
+    <nav className='container mx-auto flex justify-between py-5'>
+      <Link href='/'>
+        <h1>NextAuth App</h1>
+      </Link>
+      <ul className='flex gap-5 items-center'>
         <li>
-          <Link href='/'>Home</Link>
+          <Link href='/auth/login'>Login</Link>
         </li>
         <li>
-          <Link href='/about'>About</Link>
+          <Link href='/auth/register'>Register</Link>
         </li>
         <li>
           <ThemeSwitch />
