@@ -16,10 +16,13 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { registerUserSchema } from '@/lib/schemas'
 import { useState } from 'react'
+import { showToast } from 'nextjs-toast-notify'
+import { useRouter } from 'next/navigation'
 
 export const formSchema = registerUserSchema
 
 export default function Register () {
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,11 +34,12 @@ export default function Register () {
     }
   })
 
-  const [error, setError] = useState<Error | null>(null)
+  const [error, setError] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 
   function onSubmit (values: z.infer<typeof formSchema>) {
     setLoading(true)
+    setError([])
     fetch('/api/auth/register', {
       method: 'POST',
       headers: {
@@ -44,17 +48,25 @@ export default function Register () {
       body: JSON.stringify(values)
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText || 'Network response was not ok')
-        }
         return response.json()
       })
       .then(data => {
-        console.log(data)
-        // redirect
+        if (data.error) {
+          setError(data.error)
+        } else {
+          showToast.success(data.message, {
+            duration: 3000,
+            progress: false,
+            position: "bottom-center",
+            transition: "popUp",
+            icon: '',
+            sound: false,
+          });
+          router.push('/auth/login')
+        }
       })
       .catch((error: Error) => {
-        setError(error)
+        setError([error.message])
       })
       .finally(() => {
         setLoading(false)
@@ -62,7 +74,7 @@ export default function Register () {
   }
 
   return (
-    <div className='p-4 max-w-xl mx-auto'>
+    <div className='p-4 max-w-md mx-auto'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
           <FormField
@@ -153,12 +165,12 @@ export default function Register () {
               </FormItem>
             )}
           />
-          <Button disabled={loading} type='submit'>
+          <Button className='bg-transparent text-slate-900 border-slate-900 rounded-md border hover:bg-slate-900 hover:text-slate-50 dark:text-slate-50 dark:border-slate-50 dark:hover:bg-slate-50 dark:hover:text-slate-900' disabled={loading} type='submit'>
             {loading ? 'Loading...' : 'Register'}
           </Button>
-          {error && (
+          {error.length > 0 && (
             <p className='text-red-500'>
-              {error.message || 'Something went wrong'}
+              {error.join(', ')}
             </p>
           )}
         </form>
