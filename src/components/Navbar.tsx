@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import ThemeSwitch from '@/app/components/ThemeSwitch'
+import ThemeSwitch from '@/components/ThemeSwitch'
 
 export function Navbar () {
   return (
