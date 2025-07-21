@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 import { showToast } from 'nextjs-toast-notify'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 const loginFormSchema = z.object({
   email: z.email(),
@@ -52,11 +53,11 @@ export default function Login () {
           showToast.success('Login successful', {
             duration: 3000,
             progress: false,
-            position: "bottom-center",
-            transition: "popUp",
+            position: 'bottom-center',
+            transition: 'popUp',
             icon: '',
-            sound: false,
-          });
+            sound: false
+          })
           router.push('/dashboard')
         }
       })
@@ -76,7 +77,11 @@ export default function Login () {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder='email@example.com' {...field} type='email' />
+                  <Input
+                    placeholder='email@example.com'
+                    {...field}
+                    type='email'
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,6 +108,7 @@ export default function Login () {
             {loading ? 'Loading...' : 'Login'}
           </Button>
           {error && <p className='text-red-500 text-sm'>{error}</p>}
+          <p className='text-sm'>Don't have an account? <Link className='text-blue-500 hover:underline' href='/auth/register'>Register</Link></p>
         </form>
       </Form>
     </div>

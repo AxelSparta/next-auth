@@ -18,6 +18,7 @@ import { registerUserSchema } from '@/lib/schemas'
 import { useState } from 'react'
 import { showToast } from 'nextjs-toast-notify'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export const formSchema = registerUserSchema
 
@@ -57,11 +58,11 @@ export default function Register () {
           showToast.success(data.message, {
             duration: 3000,
             progress: false,
-            position: "bottom-center",
-            transition: "popUp",
+            position: 'bottom-center',
+            transition: 'popUp',
             icon: '',
-            sound: false,
-          });
+            sound: false
+          })
           router.push('/auth/login')
         }
       })
@@ -165,14 +166,22 @@ export default function Register () {
               </FormItem>
             )}
           />
-          <Button className='bg-transparent text-slate-900 border-slate-900 rounded-md border hover:bg-slate-900 hover:text-slate-50 dark:text-slate-50 dark:border-slate-50 dark:hover:bg-slate-50 dark:hover:text-slate-900' disabled={loading} type='submit'>
+          <Button
+            className='bg-transparent text-slate-900 border-slate-900 rounded-md border hover:bg-slate-900 hover:text-slate-50 dark:text-slate-50 dark:border-slate-50 dark:hover:bg-slate-50 dark:hover:text-slate-900'
+            disabled={loading}
+            type='submit'
+          >
             {loading ? 'Loading...' : 'Register'}
           </Button>
           {error.length > 0 && (
-            <p className='text-red-500 text-sm'>
-              {error.join(', ')}
-            </p>
+            <p className='text-red-500 text-sm'>{error.join(', ')}</p>
           )}
+          <p className='text-sm'>
+            Already have an account?{' '}
+            <Link className='text-blue-500 hover:underline' href='/auth/login'>
+              Login
+            </Link>
+          </p>
         </form>
       </Form>
     </div>

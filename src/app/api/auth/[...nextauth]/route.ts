@@ -21,7 +21,6 @@ const authOptions = {
         }
       },
       async authorize (credentials) {
-        console.log(credentials)
         const parsedBody = credentialsSchema.safeParse(credentials)
         if (!parsedBody.success) {
           throw new Error(
@@ -42,12 +41,12 @@ const authOptions = {
             email: user.email
           }
         }
-        return null
+        throw new Error('Invalid credentials')
       }
     })
   ],
   pages: {
-    signIn: '/auth/signin'
+    signIn: '/auth/login'
   }
 }
 
